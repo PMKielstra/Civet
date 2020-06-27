@@ -1,11 +1,14 @@
 class ScenarioSource:
     """The superclass for anything that provides scenarios to a Civet instance."""
+
     def get_scenarios(self):
         """Returns a list of dicts, each dict representing a scenario.  In this implementation, returns ["options": ""}]."""
         return [{"options": ""}]
 
+
 class Analyzer:
     """The superclass for anything that analyzes the results from a Civet scenario.  These classes should be as minimal as possible, each doing a very narrow and well-defined job.  If you want to gather six data points with no real relation to each other, write six analyzers and chain them together in your Civet instance."""
+
     def analyze(self, out, err):
         """Takes in text from a completed scenario and performs some kind of processing on it.
         Args:
@@ -20,8 +23,10 @@ class Analyzer:
         else:
             return {"output": out}
 
+
 class Output:
     """The superclass for anything that prints out processed results from a completed set of Civet scenarios."""
+
     def output(self, keys, processed_code_results):
         """"Formats and outputs data to some endpoint.  In this implementation, prints to STDOUT.
 

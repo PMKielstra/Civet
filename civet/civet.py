@@ -3,6 +3,7 @@ import shlex
 
 from .building_blocks import ScenarioSource, Analyzer, Output
 
+
 class Civet:
     """The main Civet class.  Implements a builder pattern to create and run Civet instances.
 
@@ -13,13 +14,12 @@ class Civet:
     Attributes:
         options: A dict containing all options set by the user.  Optional.  Leaving out a key is treated as giving it the default value.
         command, scenario_sources, analyzers, otuputs: Handled by the builder logic.
-    
+
     """
 
-    
-    __default_options = { "serial": False, "stdout_stderr_encoding": "utf-8"  }
-    
-    def __init__(self, options = {}, command="", scenario_sources=[], analyzers=[], outputs=[]):
+    __default_options = {"serial": False, "stdout_stderr_encoding": "utf-8"}
+
+    def __init__(self, options={}, command="", scenario_sources=[], analyzers=[], outputs=[]):
         """Initializes Civet and apply default values to any options that have not been passed in."""
         self.options = self.__default_options
         self.options.update(options)
@@ -73,10 +73,13 @@ class Civet:
         # Spin up all processes at once, for parallelism
         running_processes = []
         for scenario in scenarios:
-            formatted_command = shlex.split(self.command.format(**scenario)) # Scenario is a dict, so we ** to apply it.
-            proc = subprocess.Popen(formatted_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # Scenario is a dict, so we ** to apply it.
+            formatted_command = shlex.split(self.command.format(**scenario))
+            proc = subprocess.Popen(
+                formatted_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             running_processes += [(formatted_command, proc)]
-            if self.options["serial"]: # Wait for each process to finish before setting up the next one.
+            # Wait for each process to finish before setting up the next one.
+            if self.options["serial"]:
                 proc.wait()
 
         # Process raw results
@@ -84,11 +87,13 @@ class Civet:
         keys = set()
         for i, (formatted_command, proc) in enumerate(running_processes):
             processed = {"id": i, "command": " ".join(formatted_command)}
-            out, err = map(lambda s: s.decode(self.options["stdout_stderr_encoding"]), proc.communicate())
+            out, err = map(lambda s: s.decode(
+                self.options["stdout_stderr_encoding"]), proc.communicate())
             for analyzer in self.analyzers:
                 processed.update(analyzer.analyze(out, err))
             processed_code_results += [processed]
-            keys = keys.union(set(processed.keys())) # Keep track of all keys returned from all processed output.
+            # Keep track of all keys returned from all processed output.
+            keys = keys.union(set(processed.keys()))
 
         # Output processed results
         keys = list(keys)
