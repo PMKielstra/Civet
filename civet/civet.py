@@ -1,7 +1,7 @@
 import subprocess
 import shlex
 
-from .civet_building_blocks import ScenarioSource, Analyzer, Output
+from .building_blocks import ScenarioSource, Analyzer, Output
 
 class Civet:
     __default_options = { "serial": False, "stdout_stderr_encoding": "utf-8"  }
