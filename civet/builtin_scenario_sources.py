@@ -75,7 +75,7 @@ class CsvScenarioSource(ScenarioSource):
         Raises:
             AssertionError: If the CSV file from the constructor doesn't exist.
         """
-        assert path.exists(filepath)
+        assert path.exists(self.filepath)
         keys = []
         scenarios = []
         with open(self.filepath, "r") as csvfile:
