@@ -10,7 +10,7 @@ class CombineScenarios(ScenarioSource):
 
     Attributes:
         *args: A list of ScenarioSource instances.
-        mode: A keyword argument with two possible values, CombineScenarios.ZIP (in which scenario lists are zipped together, combining A[1] with B[1], A[2] with B[2], and so on), and CombineScenarios.PRODUCT (in which scenario lists are combined with a Cartesian product, combining A[1] with B[1], A[1] with B[2], A[2] with B[1], A[2] with B[2], and so on).
+        mode: A keyword argument with two possible values, CombineScenarios.ZIP (in which scenario lists are zipped together, combining A[1] with B[1], A[2] with B[2], and so on), and CombineScenarios.PRODUCT (in which scenario lists are combined with a Cartesian product, combining A[1] with B[1], A[1] with B[2], A[2] with B[1], A[2] with B[2], and so on).  By default, it's PRODUCT.
     """
     ZIP = 0
     PRODUCT = 1
@@ -21,7 +21,7 @@ class CombineScenarios(ScenarioSource):
         for a in args:
             assert isinstance(a, ScenarioSource)
 
-        self.mode = kwargs.pop("mode", self.ZIP)
+        self.mode = kwargs.pop("mode", self.PRODUCT)
         assert self.mode in [self.ZIP, self.PRODUCT]
 
         self.scenario_sources = list(args)
