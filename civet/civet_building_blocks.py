@@ -14,6 +14,13 @@ class Output:
         print(keys)
         print(processed_code_results)
 
+class DictListScenarioSource(ScenarioSource):
+    def __init__(self, scenarios):
+        self.scenarios = scenarios
+
+    def get_scenarios(self):
+        return self.scenarios
+
 import re
 class RegexAnalyzer(Analyzer):
     def __init__(self, regex, search_in_err=False):

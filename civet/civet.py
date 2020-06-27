@@ -1,6 +1,8 @@
 import subprocess
 import shlex
 
+from .civet_building_blocks import ScenarioSource, Analyzer, Output
+
 class Civet:
     __default_options = { "serial": False, "stdout_stderr_encoding": "utf-8"  }
     
@@ -13,15 +15,19 @@ class Civet:
         self.outputs = outputs
 
     def use_command(self, command):
+        assert isinstance(command, str)
         return Civet(self.options, command, self.scenario_sources, self.analyzers, self.outputs)
 
     def get_scenarios_from(self, source):
+        assert isinstance(source, ScenarioSource)
         return Civet(self.options, self.command, self.scenario_sources + [source], self.analyzers, self.outputs)
 
     def analyze_with(self, analyzer):
+        assert isinstance(analyzer, Analyzer)
         return Civet(self.options, self.command, self.scenario_sources, self.analyzers + [analyzer], self.outputs)
 
     def output_to(self, output):
+        assert isinstance(output, Output)
         return Civet(self.options, self.command, self.scenario_sources, self.analyzers, self.outputs + [output])
 
     def run(self):
