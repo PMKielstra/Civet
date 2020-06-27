@@ -80,7 +80,7 @@ Civet currently supports two options:
 
 ```
 options = {
-"serial": False # Run scenarios one after the other instead of in parallel
+"serial": False, # Run scenarios one after the other instead of in parallel
 "stdout_stderr_encoding": "utf-8" # The text encoding used on STDOUT and STDERR by whatever program you will invoke
 }
 ```
