@@ -56,6 +56,10 @@ class Civet:
         else:
             return 3
 
+    def __remove_dupes(self, keys):
+        seen = set()
+        return [k for k in keys if not (k in seen or seen.add(k))]
+
     def run(self):
         """Gathers all scenarios (calling get_scenarios on all scenario sources), runs all processes, and analyzes and outputs results."""
         # Sanity checking
@@ -84,7 +88,7 @@ class Civet:
 
         # Process raw results
         processed_code_results = []
-        keys = set()
+        keys = []
         for i, (formatted_command, proc) in enumerate(running_processes):
             processed = {"id": i, "command": " ".join(formatted_command)}
             out, err = map(lambda s: s.decode(
@@ -93,10 +97,10 @@ class Civet:
                 processed.update(analyzer.analyze(out, err))
             processed_code_results += [processed]
             # Keep track of all keys returned from all processed output.
-            keys = keys.union(set(processed.keys()))
+            keys = keys + list(processed.keys())
 
         # Output processed results
-        keys = list(keys)
+        keys = self.__remove_dupes(keys)
         keys.sort(key=self.__sort_id_command_else)
 
         for output in self.outputs:
