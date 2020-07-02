@@ -31,22 +31,26 @@ class Civet:
     def use_command(self, command):
         """Creates a Civet instance identical to this one but using the passed-in command."""
         assert isinstance(command, str)
-        return Civet(self.options, command, self.scenario_sources, self.analyzers, self.outputs)
+        self.command = command
+        return self
 
     def get_scenarios_from(self, source):
         """Creates a Civet instance identical to this one but adding the passed-in scenario source to the list of scenario sources to use."""
         assert isinstance(source, ScenarioSource)
-        return Civet(self.options, self.command, self.scenario_sources + [source], self.analyzers, self.outputs)
-
+        self.scenario_sources.append(source)
+        return self
+    
     def analyze_with(self, analyzer):
         """Creates a Civet instance identical to this one but adding the passed-in analyzer to the list of analyzers to use."""
         assert isinstance(analyzer, Analyzer)
-        return Civet(self.options, self.command, self.scenario_sources, self.analyzers + [analyzer], self.outputs)
+        self.analyzers.append(analyzer)
+        return self
 
     def output_to(self, output):
         """Creates a Civet instance identical to this one but adding the passed-in output to the list of outputs to use."""
         assert isinstance(output, Output)
-        return Civet(self.options, self.command, self.scenario_sources, self.analyzers, self.outputs + [output])
+        self.outputs.append(output)
+        return self
 
     def __sort_id_command_else(self, s):
         if s == "id":
