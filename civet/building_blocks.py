@@ -2,7 +2,7 @@ class ScenarioSource:
     """The superclass for anything that provides scenarios to a Civet instance."""
 
     def get_scenarios(self):
-        """Returns a list of dicts, each dict representing a scenario.  In this implementation, returns ["options": ""}]."""
+        """Returns a list of dicts, each dict representing a scenario.  In this implementation, returns [{"options": ""}]."""
         return [{"options": ""}]
 
 
